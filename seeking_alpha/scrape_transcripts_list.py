@@ -2,7 +2,7 @@ import asyncio
 from time import sleep
 from crawl4ai import AsyncWebCrawler, BrowserConfig, CrawlerRunConfig
 import re, json
-from tickers import dow_jones
+from tickers import dow_jones,sp_500
 async def main():
     # 1) Reference your persistent data directory
     browser_config = BrowserConfig(
@@ -28,7 +28,7 @@ async def main():
         for ticker in tickers:
             id = 1
             while True:
-                sleep(3)
+                sleep(5)
                 url = url_tpl.format(ticker, ticker, id)
                 print(f"id is {id}， url is {url}")
                 try:
@@ -51,7 +51,7 @@ async def main():
                     print(f"Error occurred: {e}")
                     
 
-        with open('output.json', 'w+') as f:
+        with open('sp_500_list_output.json', 'w+') as f:
             json.dump(scraped_data, f, indent=4)
 if __name__ == "__main__":
     asyncio.run(main())

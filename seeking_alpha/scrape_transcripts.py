@@ -36,7 +36,7 @@ async def main():
         #wait_for_images=True,
     )
     
-    with open('transcript_list.json', 'r') as json_f:
+    with open('sp_500_transcript_list.json', 'r') as json_f:
         json_data = json_f.read()
         target_list = json.loads(json_data)
         #print(f"target_list is {target_list}")
@@ -45,7 +45,7 @@ async def main():
 
     all_transcripts = []
     
-    with open('all_transcripts.json', 'w+', encoding='utf8') as out_f:
+    with open('sp500_transcripts.json', 'w+', encoding='utf8') as out_f:
         out_f.write("[\n")
         
         async with AsyncWebCrawler(config=browser_config) as crawler:
@@ -59,6 +59,10 @@ async def main():
                     print(f"url is {url}")
                     result = await crawler.arun(url=url, config=crawl_config)
                     if result.success:
+                        print(f"len(result.extracted_content) is {len(result.extracted_content)}")
+                        if len(result.extracted_content) <= 5:
+                            print(f"Error: No content extracted for {url}")
+                            return
                         all = {'content' :result.extracted_content, 'raw': result.html[:150]} | item 
                         all_transcripts.append(all)
                         #print("Successfully accessed private data with your identity!")
